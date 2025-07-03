@@ -1,0 +1,3 @@
+packages:
+  - git: https://github.com/systemizing-solutions/dbt-assertions-dq
+    revision: 20f1d1d2e341f23abadd5d885951bb52e6062e02

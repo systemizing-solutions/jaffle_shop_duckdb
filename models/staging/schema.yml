@@ -29,3 +29,16 @@ models:
         tests:
           - accepted_values:
               values: ['credit_card', 'coupon', 'bank_transfer', 'gift_card']
+
+      - name: exceptions
+        assertions:
+
+          __is_positive__:
+            - amount
+
+          __is_in__:
+            payment_method: 'coupon'
+
+          PAYMENT_METHOD_is_BANK_TRANSFER:
+            description: 'PAYMENT_METHOD is equal to "BANK_TRANSFER".'
+            expression: PAYMENT_METHOD = 'BANK_TRANSFER'

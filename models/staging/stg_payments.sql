@@ -22,4 +22,7 @@ renamed as (
 
 )
 
-select * from renamed
+select 
+    *,
+    {{ dbt_assertions.assertions() | indent(4) }} 
+from renamed
