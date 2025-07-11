@@ -19,12 +19,51 @@ models:
           - accepted_values:
               values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
 
+      - name: exceptions
+        assertions:
+
+          __is_today__:
+            - order_date
+
+          __is_yesterday__:
+            - order_date
+
+          __is_on_weekday__:
+            - order_date
+
+          __is_on_weekend__:
+            - order_date
+
+          __is_on_monday__:
+            - order_date
+
+          __is_on_tuesday__:
+            - order_date
+
+          __is_on_wednesday__:
+            - order_date
+
+          __is_on_thursday__:
+            - order_date
+
+          __is_on_friday__:
+            - order_date
+
+          __is_on_saturday__:
+            - order_date
+
+          __is_on_sunday__:
+            - order_date
+
   - name: stg_payments
     columns:
       - name: payment_id
         tests:
           - unique
           - not_null
+      - name: amount
+      - name: amount_original_value
+      - name: payment_method_original_value
       - name: payment_method
         tests:
           - accepted_values:
@@ -36,8 +75,71 @@ models:
           __is_positive__:
             - amount
 
+          __is_negative__:
+            - amount
+
+          __is_greater_than__:
+            amount: 0
+            amount_original_value: 0
+
+          __is_greater_or_equal_to__:
+            amount: 0
+            amount_original_value: 0
+
+          __is_less_than__:
+            amount: 0
+            amount_original_value: 0
+
+          __is_between__:
+            amount: [0, 100]
+            amount_original_value: [0, 100]
+
           __is_in__:
-            payment_method: 'coupon'
+            payment_method: ['credit_card', 'bank_transfer']
+            payment_method_original_value: ['coupon', 'gift_card']
+
+          __is_not_in__:
+            payment_method: ['coupon', 'gift_card']
+            payment_method_original_value: ['credit_card', 'bank_transfer']
+            
+          __has_regex_pattern__:
+            payment_method: '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
+
+          __has_max__:
+            amount: 100
+
+          __has_min__:
+            amount: 0
+
+          __has_sum__:
+            amount: 1000
+
+          __has_count__:
+            amount: 1000
+
+          __has_mean__:
+            amount: 500
+
+          __has_max_by__:
+            amount:  1000 # no grouping
+            # amount_original_value: (SELECT MIN(amount_original_value) FROM stg_payments) # no grouping
+            amount:  {max: 1000, by: [payment_method]} # scalar + group by
+
+          __has_min_by__:
+            amount:  1000 # no grouping
+            amount:  {min: 1000, by: [payment_method]} # scalar + group by
+
+          __has_sum_by__:
+            amount:  1000 # no grouping
+            amount:  {sum: 1000, by: [payment_method]} # scalar + group by
+
+          __has_count_by__:
+            amount:  10 # no grouping
+            amount:  {count: 2, by: [payment_method]} # scalar + group by
+
+          __has_mean_by__:
+            amount:  500 # no grouping
+            amount:  {mean: 500, by: [payment_method]} # scalar + group by
 
           PAYMENT_METHOD_is_BANK_TRANSFER:
             description: 'PAYMENT_METHOD is equal to "BANK_TRANSFER".'
