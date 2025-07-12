@@ -122,24 +122,34 @@ models:
 
           __has_max_by__:
             amount:  1000 # no grouping
-            # amount_original_value: (SELECT MIN(amount_original_value) FROM stg_payments) # no grouping
-            amount:  {max: 1000, by: [payment_method]} # scalar + group by
+            amount_original_value: (SELECT MIN(customer_id) FROM stg_orders) # Even SQL expressions are supported
+            amount:
+              max: 1000
+              by: [payment_method] # scalar + group by
 
           __has_min_by__:
             amount:  1000 # no grouping
-            amount:  {min: 1000, by: [payment_method]} # scalar + group by
+            amount:
+              min: 1000
+              by: [payment_method] # scalar + group by
 
           __has_sum_by__:
             amount:  1000 # no grouping
-            amount:  {sum: 1000, by: [payment_method]} # scalar + group by
+            amount:
+              sum: 1000
+              by: [payment_method] # scalar + group by
 
           __has_count_by__:
             amount:  10 # no grouping
-            amount:  {count: 2, by: [payment_method]} # scalar + group by
+            amount:
+              count: 2
+              by: [payment_method] # scalar + group by
 
           __has_mean_by__:
             amount:  500 # no grouping
-            amount:  {mean: 500, by: [payment_method]} # scalar + group by
+            amount:
+              mean: 500
+              by: [payment_method] # scalar + group by
 
           PAYMENT_METHOD_is_BANK_TRANSFER:
             description: 'PAYMENT_METHOD is equal to "BANK_TRANSFER".'
