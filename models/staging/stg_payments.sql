@@ -1,3 +1,6 @@
+-- depends_on: {{ ref('stg_orders') }}
+  -- depends_on: {{ ref('stg_customers') }}
+
 with source as (
     
     {#-

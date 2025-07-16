@@ -1,3 +1,5 @@
 packages:
+  # - local: C:\Users\<username>\OneDrive\Documents\GitHub\dbt-assertions-dq
   - git: https://github.com/systemizing-solutions/dbt-assertions-dq
-    revision: 20f1d1d2e341f23abadd5d885951bb52e6062e02
+    # revision: 20f1d1d2e341f23abadd5d885951bb52e6062e02 # Old Hash Just the plugins
+    revision: df2f39f908cbfc455bf8d5a009592433758ec37a

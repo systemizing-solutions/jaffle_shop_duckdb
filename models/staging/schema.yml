@@ -1,5 +1,9 @@
 version: 2
 
+valid_payment_methods: &valid_payment_methods
+  - credit_card
+  - bank_transfer
+
 models:
   - name: stg_customers
     columns:
@@ -95,12 +99,12 @@ models:
             amount_original_value: [0, 100]
 
           __is_in__:
-            payment_method: ['credit_card', 'bank_transfer']
+            payment_method: *valid_payment_methods
             payment_method_original_value: ['coupon', 'gift_card']
 
           __is_not_in__:
             payment_method: ['coupon', 'gift_card']
-            payment_method_original_value: ['credit_card', 'bank_transfer']
+            payment_method_original_value: *valid_payment_methods
             
           __has_regex_pattern__:
             payment_method: '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
@@ -150,6 +154,16 @@ models:
             amount:
               mean: 500
               by: [payment_method] # scalar + group by
+
+          # Composite / differently‑named keys
+          __exists_in__:
+            - source_table: stg_orders # direct table ref
+              target_table: ref('stg_customers')
+              keys:
+                - {source: customer_id, target: customer_id}
+          
+          __is_max_stg_orders__:
+            - order_id
 
           PAYMENT_METHOD_is_BANK_TRANSFER:
             description: 'PAYMENT_METHOD is equal to "BANK_TRANSFER".'
